@@ -8,7 +8,6 @@ Created on Thu Jul  2 19:02:25 2020
 '''Hoy vamos a conocer Pandas!'''
 '''Para eso vamos a utilizar algunas tablas de datos'''
 
-
 #%%
 import pandas as pd
 #%%
@@ -18,9 +17,11 @@ import pandas as pd
 path = "C:\\Users\\USUARIO\\Desktop\\AT\\Clases_Python\\Python_for_ML\\clase_2"
 df = pd.read_excel(path + "\\inputs\\customers.xlsx")
 #%%
-
+print(type(df))
+#%%
 '''Conoce tu tabla!!!'''
-print(df.head(), df.columns, df.shape)
+df_head = df.head(20)
+print(df_head, df.columns, df.shape)
 print(df.index)
 #%%
 
@@ -51,9 +52,28 @@ print(df.mean(axis = 1))
 
 '''Respondemos'''
 '''1. ¿Cuantas veces en promedio ha comprado un cliente?'''
+respuesta_1 = df["purchases"].mean()
+print(respuesta_1)
+#%%
 '''2. ¿Cuantos clientes han comprado en total? (Recuerda que cada fila es un cliente)'''
+respuesta_2 = df["ID_customer"].count()
+print(respuesta_2)
+
+respuesta_2 = df.shape[0]
+print(respuesta_2)
+
+#%%
 '''3. ¿Cuantos clientes han comprado por el app?'''
+
+#%%
 '''4. ¿Que porcentaje del total de los pedidos fueron hechos entre viernes y domingo?'''
+viernes_domingo = df["frid_sund_purchases"].sum()
+lunes_jueves = df["mon_thur_purchases"].sum()
+
+print(viernes_domingo / (viernes_domingo + lunes_jueves))
+
+
+#%%
 '''5. ¿Cuanto valor compra en total un cliente promedio'''
 '''6. ¿Cual es el ticket promedio de los clientes?'''
 
@@ -76,13 +96,13 @@ print(df["ratio_inactividad"])
 
 '''Ahora pasamos a una nueva df'''
 df_soccer = pd.read_excel(path + "\\inputs\\soccer_matches.xlsx", sheet_name = "data")
-df_soccer.columns
+
 #%%
 
 '''Conoce tu df!!!'''
-print()
+print(df_soccer.head(), df_soccer.columns, df_soccer.shape)
 
-df_soccer_description = 
+df_soccer_description = df_soccer.describe()
 print(df_soccer_description)
 #%%
 
@@ -96,7 +116,7 @@ print(df_soccer["league"].replace("Bundesliga 1", "Hola").unique())
 
 print("\n")
 print(df_soccer.head()["datetime"], "\n",
-      df_soccer.sort_values(by = "datetime" , ascending = False).head()["datetime"])
+      df_soccer.sort_values(by = "datetime", ascending = False).head()["datetime"])
 
 #%%
 '''Valores faltantes: na'''
@@ -105,7 +125,7 @@ print("\n")
 print(df_soccer.isna())
 
 print("\n")
-print(df_soccer.isna().sum())
+print(df_soccer.isna().sum(axis = 1))
 
 print("\n")
 print(df_soccer["yellow_cards_away"].isna().sum())
@@ -117,9 +137,26 @@ print(df_soccer.fillna(0))
 
 '''Respondemos'''
 '''1. ¿Cuantos equipos locales diferentes hay?'''
+
+local = df_soccer["home_team"].nunique()
+print(local)
+
+#%%
 '''2. ¿Cuales son los 10 partidos mas antiguos de la base?'''
-'''3. ¿Cuantos partidos no tuvieron tarjetas amarillas?'''
-'''4. ¿Cuantos partidos si tuvieron tarejtas rojas?'''
+df_soccer = df_soccer.sort_values(by = "datetime", ascending = True)
+antiguos_10 = df_soccer[["datetime", "home_team", "away_team"]].head(10)
+print(antiguos_10)
+
+#%%
+'''3. ¿Cuantos partidos no tuvieron tarjetas amarillas para los locales?'''
+no_amarillas = df_soccer["yellow_cards_home"].isna().sum()
+print(no_amarillas)
+
+#%%
+'''4. ¿Cuantos partidos si tuvieron tarjetas rojas?'''
+
+
+
 
 #%%
 
@@ -163,7 +200,7 @@ print("\n")
 print(df_soccer.loc[(df_soccer["home_team"] == "Bayern Munich") | (df_soccer["away_team"] == "Bayern Munich")][["home_team", "away_team"]])
 
 print("\n")
-condition = (df_soccer["home_team"] == "Bayern Munich") & (df_soccer["away_team"] == "Bayern Munich")
+condition = (df_soccer["home_team"] == "Bayern Munich") & (df_soccer["away_team"] == "Bayer Leverkusen")
 df_condition = df_soccer.loc[condition]
 print(df_condition[["home_team", "away_team"]])
 
@@ -171,7 +208,21 @@ print(df_condition[["home_team", "away_team"]])
 
 '''Respondemos'''
 '''1. ¿Contra quien es el partido mas antiguo del Bayer Leverkusen como local en la base? (herramientas: loc, sort_values, iloc)'''
+
+leverkusen = df_soccer.loc[df_soccer["home_team"] == "Bayer Leverkusen"].sort_values(by = "datetime", ascending = True)["away_team"].iloc[0]
+print(leverkusen)
+
+#%%
 '''2. ¿Cuantos goles metio el Barcelona de local?'''
-'''3. ¿Cuanto goles recibio el Real Madrid?'''
+'''3. ¿Cuanto goles recibio el Real Madrid como local?'''
 '''4. ¿Cual es el ratio de conversion (tiros / goles) del Werder Bremen?'''
+#%%
 '''5. ¿Cual es el promedio de goles totales en la Bundesliga? (herramientas: loc, suma de columnas, promedio de fila)'''
+
+df_bundesliga = df_soccer.loc[df_soccer["league"] == "Bundesliga 1"]
+total_goles = df_bundesliga["match_home_goals"].sum() + df_bundesliga["match_away_goals"].sum()
+total_partidos = df_bundesliga.shape[0]
+promedio_goles = total_goles / total_partidos
+
+print(promedio_goles)
+

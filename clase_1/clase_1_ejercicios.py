@@ -107,14 +107,14 @@ def eliminar_valor_minimo (lista):
     minimo = lista[0]
     i_min = 0
     for i in range(1, len(lista)):
-        if i < minimo:
+        if lista[i] < minimo:
             minimo = lista[i]
             i_min = i
     
     lista.pop(i_min)
     return lista
 
-r = [9, 2, 5, 7, 10, 3, 15]
+r = [9, 4, 5, 7, 10, 3, 15]
 r = eliminar_valor_minimo(r)
 print(r)
 r = eliminar_valor_minimo(r)
@@ -131,9 +131,9 @@ def lista_interseccion (lista1, lista2):
     
     return lista3
 
-lista1 = [1, 3, 5, 7, 9, 11, 13, 15]
-lista2 = [3, 5, 7, 11, 13]
-lista3 = lista_interseccion(lista1, lista2)
+lista_primera = [1, 3, 5, 7, 9, 11, 13, 15]
+lista_segunda = [3, 5, 7, 11, 13]
+lista3 = lista_interseccion(lista_primera, lista_segunda)
 print(lista3)
 
 #%%
@@ -151,7 +151,27 @@ print(lista3)
 
 #%%
 '''solucion 10'''
+def nivel_credito (antiguedad, trabajo, score):
+    if (antiguedad>=5) and (trabajo==1) and (score in ["A", "B"]):
+        credito = "Nivel 1"
+        return credito
+    elif (trabajo==1) and (score in ["A", "B"]):
+        credito = "Nivel 2"
+        return credito
+    elif (antiguedad>=2.5) and ((trabajo==1) or (score!="C")):
+        credito = "Nivel 3"
+        return credito
+    else:
+        return "Denegado"
+    
+persona_1 = nivel_credito(3, 1, "A")
+print(persona_1)    
 
+persona_2 = nivel_credito(3, 0, "C")
+print(persona_2)  
+
+persona_3 = nivel_credito(6, 1, "A")  
+print(persona_3)
 #%%
 '''Una pausa para conocer los diccionarios'''
 #%%
@@ -166,6 +186,8 @@ print(diccionario_ejemplo["uno"])
 print("\n")
 for i in diccionario_ejemplo:
     print(i, "-->", diccionario_ejemplo[i])
+
+diccionario_ejemplo[list(diccionario_ejemplo.keys())[0]]
 #%%
 diccionario_ejemplo_2 = dict(uno=1, dos=2, tres=3)
 
@@ -176,6 +198,8 @@ print(diccionario_ejemplo_2["uno"])
 print("\n")
 for i in diccionario_ejemplo_2:
     print(i, "-->", diccionario_ejemplo_2[i])
+    
+print(diccionario_ejemplo_2, diccionario_ejemplo)
 #%%
 '''De vuelta a los ejercicios'''
 #%%
@@ -199,9 +223,63 @@ inmuebles = [["Inm 1", 100, 2],
             ]
 
 #%%
-
+def valoracion (lista_inmuebles):
+    dict_final = {}
+    for inmueble in lista_inmuebles:
+        nombre = inmueble[0]
+        m2 = inmueble[1]
+        zona = inmueble[2]
+        
+        valor = diccionario_zona_valorm2[zona] * m2
+        dict_temp = {nombre: valor}
+        
+        dict_final.update(dict_temp)
+        
+    return dict_final
+        
+diccionario_inmuebles =   valoracion(inmuebles)      
+print(diccionario_inmuebles)
 #%%
 '''12'''
 #Crea una lista con los 1000 primeros numeros primos
+
+def es_primo(x):
+    
+    if x==1 or x==0:
+        return 0
+    if x==2:
+        return 1
+    if x//2 == x/2:
+        return 0
+    else:
+        counter_divs = 0
+        for i in range(1, x+1):
+            if x//i == x/i:
+                counter_divs += 1
+            
+            if counter_divs>2:
+                break
+    
+        if counter_divs>2:
+            return 0
+        else:
+            return 1
+    
+lista_primos = []
+i=0
+
+while len(lista_primos)<1000:
+    if es_primo(i) == 1:
+        lista_primos.append(i)
+    i += 1
+
+print(lista_primos)    
+        
+#%%
+for i in range(5, 10):
+    print(i)
+    
+ #%%
+print(type(range(10))
 
 #%%

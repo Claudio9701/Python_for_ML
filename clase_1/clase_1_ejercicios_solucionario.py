@@ -1,4 +1,4 @@
-#%%
+    #%%
 '''1'''
 # Tenemos una lista, imprime cada uno de los valores uno a uno
 lista1 = [1, 2, 3, 4, 5, 6, 7, 8]
